@@ -7,19 +7,24 @@ import { RootState } from '../../store/store'
 import { motion } from 'framer-motion'
 import sound from '../../assets/sound.mp3'
 import { checkTab, playAudio } from '../../helpers/helpers'
+import SVG from '../../UI/SVG/SVG'
 
 const Timer = () => {
-    const {pomodoro,long,short,activeTab} = useSelector((state: RootState) => state.setting)
+    const {pomodoro,long,short,activeTab,color} = useSelector((state: RootState) => state.setting)
     const [time, setTime] = useState(pomodoro*60);
     const [isRunning, setIsRunning] = useState(false);
     const [isRunned, setIsRunned] =useState(false)
     const intervalRef = useRef<number | null>(null);
     const [openModal, setOpenModal] =useState(false)
-
+    const [currentSec, setCurrentSec]=useState(pomodoro*60)
+    const [strokeDashOffsetPx, setStrokeDashOffsetPx]=useState(time* (1130/currentSec))
+    const [strokeDashOffsetPxMob, setStrokeDashOffsetPxMob]=useState(time* (790/currentSec))
     const handleReset = () => {
         setIsRunning(false);
         setIsRunned(false)
-        setTime(60);
+        setTime(pomodoro*60);
+        setStrokeDashOffsetPx(1130)
+        setStrokeDashOffsetPxMob(790)
       };
 
     useEffect(()=> {
@@ -27,7 +32,7 @@ const Timer = () => {
     },[])
     useEffect(()=>{
         handleReset()
-        checkTab(activeTab, setTime, pomodoro,short,long)
+        checkTab(activeTab, setTime, pomodoro,short,long,setCurrentSec)
     },[activeTab,pomodoro,short,long])
 
     useEffect(()=> {
@@ -43,12 +48,15 @@ const Timer = () => {
       if (isRunning && time > 0) {
         intervalRef.current = setInterval(() => {
           setTime(prevTime => prevTime - 1);
+         
         }, 1000);
-  
+        setStrokeDashOffsetPx(time* (1130/currentSec))
+        setStrokeDashOffsetPxMob(time* (790/currentSec))
         return () => clearInterval(intervalRef.current!);
       } else {
         clearInterval(intervalRef.current!);
       }
+    
       if(time==0) {
         playAudio(sound)
     }
@@ -67,7 +75,7 @@ const Timer = () => {
        
     };
     const handleRestart =()=> {
-        checkTab(activeTab, setTime, pomodoro,short,long)
+        checkTab(activeTab, setTime, pomodoro,short,long,setCurrentSec)
         setIsRunning(true)
         setIsRunned(true)
     }
@@ -80,6 +88,7 @@ const Timer = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}>
         <div className={styles.inner}> 
+            <SVG strokeDashOffsetPx={strokeDashOffsetPx} strokeDashOffsetPxMob={strokeDashOffsetPxMob} color={color} />
             <div className={styles.clock}>
                 {formattedTime}
             </div>

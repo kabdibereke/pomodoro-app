@@ -23,6 +23,28 @@
         left: 50%;
         transform: translate(-50%, -50%);
         gap: 20px;
+        .svg {
+            position: absolute;
+            z-index: 1;
+            transform: rotate(-90deg);
+            .circle_animation {
+                stroke-dasharray: 1130;
+                
+                /* stroke-dashoffset: 565; */
+            }
+        }
+        .svg_mob {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            transform: rotate(-90deg);
+            .circle_animation {
+                stroke-dasharray: 1130;
+                
+                /* stroke-dashoffset: 565; */
+            }
+        }
+        
         .clock {
             width: fit-content;
             height: fit-content;
@@ -40,7 +62,7 @@
             border: none;
             font-weight: 700;
             color: var(--color-secondary);
-            font-size: 16px;
+            font-size: 15px;
             text-transform: uppercase;
             display: flex;
             justify-content: center;
@@ -72,10 +94,23 @@
         height: 300px;
         .inner {
             .clock {
-                font-size: 80px;
+                font-size: 75px;
    
             }
-
+            .svg {
+                display: none;
+            }
+            .svg_mob {
+                display: block;
+                position: absolute;
+                z-index: 1;
+                transform: rotate(-90deg);
+                .circle_animation {
+                    stroke-dasharray: 790;
+                    
+                    /* stroke-dashoffset: 565; */
+                }
+            }
         }
     }
 }

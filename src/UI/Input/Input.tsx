@@ -26,7 +26,7 @@ const Input = ({title, value, setInput}:InputProps) => {
   return (
     <div className={styles.input_wrapper}>
         <p className={styles.name}>{title}</p>
-        <input className={styles.input} min="5" max='59'  value={value} onChange={checkNumber} type="number"   />
+        <input className={styles.input} min="1" max='59'  value={value} onChange={checkNumber} type="number"   />
     </div>
   )
 }
